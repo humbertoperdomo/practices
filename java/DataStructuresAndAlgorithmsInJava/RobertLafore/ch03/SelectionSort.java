@@ -1,13 +1,13 @@
-// BubbleSort.java
-// demostrates bubble sort
-// to run this program: $ java BubbleSortApp
+// SelectionSort.java
+// demostrates selection sort
+// to run this program: $ java SelectionSortApp
 ////////////////////////////////////////////////////////////////////////////////
-class ArrayBub
+class ArraySel
 {
   private long[] a;           // ref to array a
   private int nElems;         // number of data items
 //------------------------------------------------------------------------------
-  public ArrayBub(int max)    // constructor
+  public ArraySel(int max)    // constructor
   {
     a = new long[max];        // create the array
     nElems = 0;               // no items yet
@@ -26,16 +26,19 @@ class ArrayBub
     System.out.println("");
   }
 //------------------------------------------------------------------------------
-  public void bubbleSort()
+  public void selectionSort()
   {
-    int out, in;
+    int out, in, min;
     long lStartTime = System.nanoTime();
-
-    for(out = nElems - 1; out > 1; out--) // outer loop (backward)
-      for(in=0; in < out; in++) // inner loop (forward)
-        if(a[in] > a[in+1])   // out of order?
-          swap(in, in+1);     // swap them
     
+    for(out = 0; out < nElems - 1; out++) { // outer loop (backward)
+      min = out;              // minimum
+      for(in = out + 1; in < nElems; in++) // inner loop (forward)
+        if(a[in] < a[min])   // out of order?
+          min = in;
+      swap(out, min);     // swap them
+
+    }
     System.out.println("Time: " + (double)(System.nanoTime() - lStartTime)/1000000.00);
   } // end bubbleSort()
 //------------------------------------------------------------------------------
@@ -45,15 +48,15 @@ class ArrayBub
     a[one] = a[two];
     a[two] = temp;
   }
-} // end class ArrayBub
+} // end class ArraySel
 ////////////////////////////////////////////////////////////////////////////////
-class BubbleSortApp
+class SelectionSortApp
 {
   public static void main(String[] args)
   {
     int maxSize = 100;        // array size
-    ArrayBub arr;             // reference to array
-    arr = new ArrayBub(maxSize); // create the array
+    ArraySel arr;             // reference to array
+    arr = new ArraySel(maxSize); // create the array
 
     arr.insert(77);           // insert 10 items
     arr.insert(99);
@@ -68,7 +71,7 @@ class BubbleSortApp
     
     arr.display();            // display items
 
-    arr.bubbleSort();         // bubble sort them
+    arr.selectionSort();         // bubble sort them
 
     arr.display();            // display items again
   } // end main()
