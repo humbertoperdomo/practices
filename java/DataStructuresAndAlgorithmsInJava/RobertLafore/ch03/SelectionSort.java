@@ -31,16 +31,16 @@ class ArraySel
     int out, in, min;
     long lStartTime = System.nanoTime();
     
-    for(out = 0; out < nElems - 1; out++) { // outer loop (backward)
+    for(out = 0; out < nElems - 1; out++) { // outer loop
       min = out;              // minimum
-      for(in = out + 1; in < nElems; in++) // inner loop (forward)
-        if(a[in] < a[min])   // out of order?
-          min = in;
+      for(in = out + 1; in < nElems; in++) // inner loop
+        if(a[in] < a[min])    // if min greater,
+          min = in;           // we have a new  min
       swap(out, min);     // swap them
 
     }
     System.out.println("Time: " + (double)(System.nanoTime() - lStartTime)/1000000.00);
-  } // end bubbleSort()
+  } // end selectionSort()
 //------------------------------------------------------------------------------
   public void swap(int one, int two)
   {
@@ -75,4 +75,4 @@ class SelectionSortApp
 
     arr.display();            // display items again
   } // end main()
-} // end class BubbleSortApp
+} // end class SelectionSortApp
