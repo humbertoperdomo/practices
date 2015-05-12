@@ -1,9 +1,11 @@
 #include <stdio.h>
 
 /**
- * Print Fahrenheit-Celsius table
- * for fahr = 0, 20, ..., 300
- */ 
+ * Print Celsius-Fahrenheit table
+ * for celsius = 0, 20, ..., 300
+ */
+float celsiusToFahrenheit(float);
+
 main() {
   float fahr, celsius;
   float lower, upper, step;
@@ -15,10 +17,12 @@ main() {
   printf("Celsius\tFahrenheit\n");
   celsius = lower;
   while(celsius <= upper) {
-    fahr = ((9.0/5.0) * celsius) + 32.0;
+    fahr = celsiusToFahrenheit(celsius);
     printf("%3.0f\t%6.1f\n", celsius, fahr);
     celsius = celsius + step;
   }
-
 }
 
+float celsiusToFahrenheit(float c) {
+  return ((9.0/5.0) * c) + 32.0;
+}
