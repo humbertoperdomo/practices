@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #define MAXLINE 1000
-#define TABSTOP 8 
+#define TABSTOP 7 
 
 int getLine(char[], int);
 
@@ -17,19 +17,27 @@ main() {
 }
 
 int getLine(char s[], int lim) {
-  int c, i, j;
-
+  int c, i, j, k;
+  
+  j = 0;
   for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i) {
-    if (c == '\t') {
-      for (j = (TABSTOP - (i%TABSTOP));j > 0; --j){
-        s[i] = ' ';
-        ++i;
-      }
-      --i;
-    } else
+    if (c == ' ' && (i%TABSTOP) == 0) {
+      if (j > 1) {
+        i = i - j;
+        s[i] = '\t';
+      } else
+        s[i] = c;
+      j = 0;
+    } else if (c == ' ') {
+      ++j;
+    } else {
+      for(k = (i - j); k < i; ++k)
+        s[k] = ' ';
       s[i] = c;
+      j = 0;
+    }
   }
-
+  
   if (c == '\n') {
     s[i] = c;
     ++i;
