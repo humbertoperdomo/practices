@@ -1,0 +1,7 @@
+MIDlet-1: Gauge,/icons/java.png,gauge.Ejemplo7
+MIDlet-Vendor: Naui
+MIDlet-Name: Gauge
+MIDlet-Icon: /icons/java.png
+MIDlet-Version: 0.0.3
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0

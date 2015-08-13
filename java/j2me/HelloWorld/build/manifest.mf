@@ -1,0 +1,11 @@
+MIDlet-6: MultipleForms, , mx.naui.midlet.MultipleForms
+MIDlet-5: Ejemplo 6, , mx.naui.midlet.Ejemplo6
+MIDlet-4: Ejemplo 5, , mx.naui.midlet.Ejemplo5
+MIDlet-3: Ejemplo 4, , mx.naui.midlet.Ejemplo4
+MIDlet-2: Ejemplo 3, , mx.naui.midlet.Ejemplo3
+MIDlet-1: Ejemplo 2, ,mx.naui.midlet.Ejemplo2
+MIDlet-Vendor: Vendor
+MIDlet-Name: Midlets
+MIDlet-Version: 1.0
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.1

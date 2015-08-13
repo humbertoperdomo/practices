@@ -1,0 +1,7 @@
+MIDlet-1: Alert,/icons/java.png,alert.Ejemplo9
+MIDlet-Vendor: Naui
+MIDlet-Name: Alert
+MIDlet-Icon: /icons/java.png
+MIDlet-Version: 0.0.2
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0

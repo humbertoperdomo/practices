@@ -1,0 +1,7 @@
+MIDlet-1: DateField y TextField,/icons/java.png,datefieldtextfield.Ejemplo5
+MIDlet-Vendor: Naui
+MIDlet-Name: DateField y TextField
+MIDlet-Icon: /icons/java.png
+MIDlet-Version: 0.0.2
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0

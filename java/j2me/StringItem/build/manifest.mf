@@ -1,0 +1,7 @@
+MIDlet-1: StringItem,/icons/java.png,stringitem.Ejemplo3
+MIDlet-Vendor: Naui
+MIDlet-Name: StringItem
+MIDlet-Icon: /icons/java.png
+MIDlet-Version: 0.0.2
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0

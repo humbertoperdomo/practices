@@ -1,0 +1,7 @@
+MIDlet-1: ChoiceGroup,/icons/java.png,choicegroup.Ejemplo6
+MIDlet-Vendor: Naui
+MIDlet-Name: ChoiceGroup
+MIDlet-Icon: /icons/java.png
+MIDlet-Version: 0.0.2
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0

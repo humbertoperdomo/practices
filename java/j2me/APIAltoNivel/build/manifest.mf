@@ -1,0 +1,7 @@
+MIDlet-1: API de Alto Nivel,/icons/java.png,apialtonivel.HolaMundoAlto
+MIDlet-Vendor: Naui
+MIDlet-Name: API de Alto Nivel
+MIDlet-Icon: /icons/java.png
+MIDlet-Version: 0.0.25
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0

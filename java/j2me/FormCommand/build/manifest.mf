@@ -1,0 +1,7 @@
+MIDlet-1: Form y Command,/icons/java.png,formcommand.Ejemplo2
+MIDlet-Vendor: Naui
+MIDlet-Name: Form y Command
+MIDlet-Icon: /icons/java.png
+MIDlet-Version: 0.0.2
+MicroEdition-Configuration: CLDC-1.1
+MicroEdition-Profile: MIDP-2.0
