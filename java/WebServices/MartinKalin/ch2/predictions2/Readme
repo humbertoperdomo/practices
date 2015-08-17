@@ -1,4 +1,0 @@
-To compile/deploy: ant -Dwar.name=predictions2 deploy
-
-The file curls.txt includes sample curl tests against the deployed service.
-
