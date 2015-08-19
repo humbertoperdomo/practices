@@ -1,4 +1,6 @@
-package WaitAndNotify;
+package waitAndNotify;
+
+import java.util.Scanner;
 
 public class Processor {
 

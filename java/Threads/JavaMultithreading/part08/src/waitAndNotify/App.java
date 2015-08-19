@@ -1,4 +1,4 @@
-package WaitAndNotify;
+package waitAndNotify;
 
 public class App {
   public static void main(String[] args) throws InterruptedException {
@@ -19,9 +19,9 @@ public class App {
       @Override
       public void run() {
         try {
-          processor.comsumer();
+          processor.consume();
         } catch (InterruptedException ie) {
-          ie.printStackTrace()
+          ie.printStackTrace();
         }
       }
     });
