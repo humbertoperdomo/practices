@@ -11,10 +11,10 @@
      The build.xml file must be edited but only one line needs to be
      changed:
 
-        <property name="tomcat.home" value="/home/mkalin/tomcat7">
+        <property name="glassfish.home" value="/home/mkalin/glassfish7">
 
-     The value of the tomcat.home property must be set to the install
-     directory for Tomcat, in this case the directory /home/mkalin/tomcat7.
+     The value of the glassfish.home property must be set to the install
+     directory for Tomcat, in this case the directory /home/mkalin/glassfish7.
 
      Once the Ant script is run
 
@@ -87,11 +87,11 @@
 <project name="TomcatProject" basedir="." default="usage">  
 
   <!-- #### Change for your system. #### -->
-  <property name="tomcat.home" value="/home/mkalin/tomcat7"/>
+  <property name="glassfish.home" value="/home/hperdomo/Programs/glassfish4/glassfish"/>
 
   <!-- Leave the rest as they are. -->
-  <property name="tomcat.lib"  value="${tomcat.home}/lib"/>
-  <property name="deploy.path" value="${tomcat.home}/webapps"/>
+  <property name="glassfish.lib"  value="${glassfish.home}/lib"/>
+  <property name="deploy.path" value="${glassfish.home}/domains/domain1/applications"/>
   
   <property name="src.dir"   value="${basedir}/src"/>  
   <property name="build.dir" value="${basedir}/build"/>  
@@ -99,8 +99,9 @@
   <property name="war.name"  value="(Please supply a name!)"/>
   
   <property name="name" value="TomcatProject"/>  
+  <property name="glassfish.admin.port" value="4848"/>  
   <path id="master-classpath">  
-    <fileset dir="${tomcat.lib}">  
+    <fileset dir="${glassfish.lib}">  
       <include name="*.jar"/>  
     </fileset>  
     <fileset dir="${src.dir}">
@@ -108,6 +109,12 @@
     </fileset>
     <pathelement path="${build.dir}"/>  
   </path>  
+
+  <presetdef name="asadmin">
+    <java jar="${glassfish.home}/modules/admin-cli.jar" fork="true" jvm="${java.home}/bin/java" >
+      <arg line="--port ${glassfish.admin.port}" />
+    </java>
+  </presetdef>
   
   <target name="usage">  
     <echo message=""/>  
@@ -128,6 +135,7 @@
     <mkdir dir="${build.dir}/WEB-INF/classes"/>
     <mkdir dir="${build.dir}/WEB-INF/lib"/>
     <mkdir dir="${build.dir}/WEB-INF/data"/>
+    <mkdir dir="${dist.dir}"/>
     
     <!-- Copy files from source to build directory  -->
     <copy todir="${build.dir}">
@@ -170,16 +178,22 @@
     <delete>
       <fileset dir="${build.dir}" includes="*.java,*.db,*.jar,web.xml"/>
     </delete>
-    <war destfile="${war.name}.war"  
+    <war destfile="${dist.dir}/${war.name}.war"  
          webxml="${build.dir}/WEB-INF/web.xml">  
       <fileset dir="${build.dir}">  
         <include name="**/*.*"/>  
       </fileset>  
     </war>  
-    <copy todir="${deploy.path}" preservelastmodified="true">  
-      <fileset dir=".">  
+    <asadmin failonerror="true">
+      <arg value="deploy" />
+      <arg value="--force=true" />
+      <arg value="${dist.dir}/${war.name}.war" />
+    </asadmin>
+    <!-- This commented command is to deploy to tomcat (just copy) -->
+    <!-- <copy todir="${deploy.path}" preservelastmodified="true">  
+      <fileset dir="${dist.dir}">  
         <include name="*.war"/>  
       </fileset>  
-    </copy>  
+    </copy> -->  
   </target>  
 </project> 

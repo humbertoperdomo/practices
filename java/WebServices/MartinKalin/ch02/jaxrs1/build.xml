@@ -11,10 +11,10 @@
      The build.xml file must be edited but only one line needs to be
      changed:
 
-        <property name="tomcat.home" value="/home/mkalin/tomcat7">
+        <property name="glassfish.home" value="/home/mkalin/glassfish7">
 
-     The value of the tomcat.home property must be set to the install
-     directory for Tomcat, in this case the directory /home/mkalin/tomcat7.
+     The value of the glassfish.home property must be set to the install
+     directory for Tomcat, in this case the directory /home/mkalin/glassfish7.
 
      Once the Ant script is run
 
@@ -87,11 +87,11 @@
 <project name="TomcatProject" basedir="." default="usage">  
 
   <!-- #### Change for your system. #### -->
-  <property name="tomcat.home" value="/usr/share/tomcat"/>
+  <property name="glassfish.home" value="/home/hperdomo/Programs/glassfish4/glassfish"/>
 
   <!-- Leave the rest as they are. -->
-  <property name="tomcat.lib"  value="${tomcat.home}/lib"/>
-  <property name="deploy.path" value="${tomcat.home}/webapps"/>
+  <property name="glassfish.lib"  value="${glassfish.home}/lib"/>
+  <property name="deploy.path" value="${glassfish.home}/webapps"/>
   
   <property name="src.dir"   value="${basedir}/src"/>  
   <property name="build.dir" value="${basedir}/build"/>  
@@ -100,7 +100,7 @@
   
   <property name="name" value="TomcatProject"/>  
   <path id="master-classpath">  
-    <fileset dir="${tomcat.lib}">  
+    <fileset dir="${glassfish.lib}">  
       <include name="*.jar"/>  
     </fileset>  
     <fileset dir="${src.dir}">
