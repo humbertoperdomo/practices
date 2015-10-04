@@ -6,7 +6,7 @@ int main() {
 
   std::cin >> item1 >> item2;
 
-  std::cout << item1 + item2 << std::stdl;
+  std::cout << item1 + item2 << std::endl;
 
   return 0;
 }
