@@ -1,0 +1,7 @@
+MOV AL, 6;
+MOV BL, 7;
+ADD AL, BL;
+STO 8;
+END
+10
+12
