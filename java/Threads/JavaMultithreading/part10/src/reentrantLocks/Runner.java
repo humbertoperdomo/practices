@@ -1,7 +1,9 @@
-import java.util.Scanner;
+package reentrantLocks;
 import java.util.concurrent.locks.Lock;
+import java.util.Scanner;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Condition;
+
 
 public class Runner {
   private int count = 0;
