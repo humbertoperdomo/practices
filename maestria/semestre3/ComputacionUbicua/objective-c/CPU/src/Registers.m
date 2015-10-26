@@ -21,4 +21,8 @@
 - (void) transferPCToMAR {
   mar = pc;
 }
+
+- (void) storeIntructionInMBR:(NSString *) instruction {
+	mbr = instruction;
+}
 @end
