@@ -1,12 +1,12 @@
 #import <Foundation/Foundation.h>
 
 @interface SampleClass:NSObject
-- (void)sampleMethod;
+- (void) sampleMethod;
 @end
 
 @implementation SampleClass
 
-- (void)sampleMethod{
+- (void) sampleMethod{
   NSLog
   (
   @
