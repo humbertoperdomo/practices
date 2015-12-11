@@ -1,0 +1,7 @@
+PS1='[\w]$' work directory will display
+PS1='[\h]$' server name will display
+PS1='[\d]$' today's date will display
+PS1='[\t]$' current time will display
+
+i.e.
+PS1='[\u@\h \W]\$ '
