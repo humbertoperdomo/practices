@@ -4,31 +4,43 @@ import java.util.Random;
 
 public class ProducerA implements Runnable {
   private BufferAcotado bufferAcotado;
+  private int numItems = 0;
+  private Random random;
   
   public ProducerA(BufferAcotado bufferAcotado) {
     this.bufferAcotado = bufferAcotado;
+    random = new Random();
+  }
+
+  public ProducerA(BufferAcotado bufferAcotado, int numItems) {
+    this.bufferAcotado = bufferAcotado;
+    this.numItems = numItems;
+    random = new Random();
   }
 
   public void run() {
-    Random random = new Random();
-    while(true) {
-      System.out.println("Character : '" + produce() + "' inserted.");
-      bufferAcotado.printq();
+    
 
-      try {
-        Thread.sleep((random.nextInt(1 - 0 + 1) + 0) * 1000);
-      } catch (InterruptedException ie) {
-        ie.printStackTrace();
+    if (numItems <= 0) {
+      while(true) {
+        try {
+          Thread.sleep((random.nextInt(1 - 0 + 1) + 0) * 1000);
+          bufferAcotado.put(getRandomChar());
+        } catch (InterruptedException ie) {
+          ie.printStackTrace();
+        }
       }
+    } else {
+      for (int i = 0; i < numItems; i++) {
+        try {
+          Thread.sleep((random.nextInt(1 - 0 + 1) + 0) * 1000);
+          bufferAcotado.put(getRandomChar());
+        } catch (InterruptedException exception) {
+          Thread.currentThread().interrupt();
+        }
+      }
+      System.out.printf("Producer done producing%nTerminating Producer%n");
     }
-  }
-  
-  public char produce() {
-    char ch = getRandomChar();
-
-    bufferAcotado.put(ch);
-
-    return ch;
   }
 
   private char getRandomChar() {

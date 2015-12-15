@@ -59,7 +59,7 @@ public class CircularBuffer {
     System.out.print("Size: " + currentSize +
         ", rp: " + ((front+currentSize)%capacity) + ", fp: " + front + ", buffer: ");
     for (int i = 0; i < capacity; i++)
-      System.out.print("buffer[" + i + "]=" 
+      System.out.print("b[" + i + "]=" 
           + dataBuffer[i] + "; ");
     System.out.println();
   }

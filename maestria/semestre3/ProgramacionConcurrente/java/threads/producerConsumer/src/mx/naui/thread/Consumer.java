@@ -1,5 +1,6 @@
 package mx.naui.thread;
 
+// Consumer.java: consumer implementation
 import java.util.Random;
 
 public class Consumer extends Thread {

@@ -1,7 +1,6 @@
 package mx.naui.thread;
 
-import java.io.*;
-
+// ProducerConsumerTest.java: test class
 public class ProducerConsumerTest {
 
   public static void main(String[] args) throws InterruptedException {
