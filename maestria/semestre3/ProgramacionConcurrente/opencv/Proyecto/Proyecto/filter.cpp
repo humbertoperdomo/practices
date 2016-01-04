@@ -33,20 +33,22 @@ void Filter::doSomething()
     {
         for (int x = 0; x < columns; ++x)
         {
-            //Mat sub(filter1.getImage(), Rect(x * width, y * height, width, height));
-            namedWindow("Splitted image"+to_string(y)+to_string(x), CV_WINDOW_AUTOSIZE);
-            imshow("Splitted image"+to_string(y)+to_string(x), splitMat(x * width, y * height, width, height));
+            //Mat sub(filter1.getImage(), Rect(x * width, y * sliceHeight, width, sliceHeight));
+            //namedWindow("Splitted image"+to_string(y)+to_string(x), CV_WINDOW_AUTOSIZE);
+            //imshow("Splitted image"+to_string(y)+to_string(x), splitMat(x * sliceWidth, y * sliceHeight, sliceWidth, sliceHeight));
         }
     }
 
-    if (orphans > 0)
+    if (orphanSlice > 0)
     {
-        int orphanWidth = image.cols / orphans;
-        for (int x = 0; x < orphans; ++x)
+        int orphanWidth = image.cols / orphanSlice;
+        for (int x = 0; x < orphanSlice; ++x)
         {
-            //Mat sub(filter1.getImage(), Rect(x * orphanWidth, fullRows * height, orphanWidth, height));
+            //Mat sub(filter1.getImage(), Rect(x * orphanWidth, fullRows * sliceHeight, orphanWidth, sliceHeight));
+            namedWindow("Splitted imageO"+to_string(x), CV_WINDOW_AUTOSIZE);
+            imshow("Splitted imageO"+to_string(x), splitMat(x * orphanWidth, fullRows * sliceHeight, orphanWidth, sliceHeight));
             namedWindow("Splitted image"+to_string(x), CV_WINDOW_AUTOSIZE);
-            imshow("Splitted image"+to_string(x), splitMat(x * orphanWidth, fullRows * height, orphanWidth, height));
+            imshow("Splitted image"+to_string(x), filter(splitMat(x * orphanWidth, fullRows * sliceHeight, orphanWidth, sliceHeight),filters[3],1,1.0,0.0));
         }
 
     }
@@ -57,9 +59,9 @@ void Filter::setNThreads(int nThreads)
     this->nThreads = nThreads;
     columns = ceil(sqrt(nThreads));
     fullRows = nThreads / columns;
-    orphans = nThreads % columns;
-    width =  image.cols / columns;
-    height = image.rows / (orphans == 0 ? fullRows : (fullRows + 1));
+    orphanSlice = nThreads % columns;
+    sliceWidth =  image.cols / columns;
+    sliceHeight = image.rows / (orphanSlice == 0 ? fullRows : (fullRows + 1));
 }
 
 Mat Filter::getImage()
@@ -79,3 +81,45 @@ Mat Filter::splitMat(int x, int y, int w, int h)
     Mat subImage(image, Rect(x, y, w, h));
     return  subImage;
 }
+
+Mat Filter::filter(Mat inputMat, double *kernel, int kernelSize, double divisor, double offset)
+{
+    Mat om;
+    double cp[3];
+    om = inputMat(Range::all(), Range::all());
+
+    if (om.data) {
+        for (int ix = 0; ix < inputMat.cols; ix++)
+        {
+            for(int iy = 0; iy < inputMat.rows; iy++)
+            {
+                cp[0] = cp[1] = cp[2] = 0.0;
+
+                for(int kx = -kernelSize; kx <= kernelSize; kx++)
+                {
+                    for(int ky = -kernelSize; ky <= kernelSize; ky++)
+                    {
+                        for(int l = 0; l < 3; l++)
+                        {
+                            cp[l] = (kernel[(kx + kernelSize) + (ky + kernelSize) * (2 * kernelSize + 1)] / divisor) *
+                                    ((double)CHECK_PIXEL(inputMat, ix + kx, iy + ky, l)) + offset;
+                        }
+                    }
+                }
+
+                for(int l = 0; l < 3; l++)
+                {
+                    cp[l] = (cp[l] > 255.0) ? 255.0 : ((cp[l]<0.0) ? 0.0 : cp[l]);
+                    cout << "cp[" << l << "] = " << cp[l] << endl;
+                }
+
+                om.at<Vec3b>(Point(ix, iy)).val[0] = cp[0];
+                om.at<Vec3b>(Point(ix, iy)).val[1] = cp[1];
+                om.at<Vec3b>(Point(ix, iy)).val[2] = cp[2];
+            }
+
+        }
+    }
+    return om;
+}
+
