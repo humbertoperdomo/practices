@@ -20,15 +20,28 @@ bool fexists(const char *filename) {
 int main(int argc, char** argv)
 {
     int nThreads;
+    int selectedFilter;
 
-    if (argc < 2 || argc > 3) {
-        cout << "Usage: main <IMAGE_PATH> [NUMBER_OF_THREADS]" << endl;
+    if (argc < 2 || argc > 4) {
+        cout << "Usage: main <IMAGE_PATH> [NUMBER_OF_THREADS] [FILTER]" << endl;
         return -1;
     }
 
+    if (argc == 4) {
+        istringstream sf(argv[3]);
+        if (!(sf >> selectedFilter)) {
+            selectedFilter = 0;
+        }
+
+        istringstream nt(argv[2]);
+        if (!(nt >> nThreads)) {
+            nThreads = 1;
+        }
+    }
+
     if (argc == 3) {
-        istringstream ss(argv[2]);
-        if (!(ss >> nThreads)) {
+        istringstream nt(argv[2]);
+        if (!(nt >> nThreads)) {
             nThreads = 1;
         }
     }
@@ -39,7 +52,7 @@ int main(int argc, char** argv)
     }
 
     char* imageName = argv[1];
-    Filter filter1(imageName, nThreads);
+    Filter filter1(imageName, nThreads, selectedFilter);
 
     if (!filter1.getImage().data) {
         cout << "No image data" << endl;

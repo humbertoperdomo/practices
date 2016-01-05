@@ -1,6 +1,7 @@
 #ifndef FILTER_H
 #define FILTER_H
 #include <opencv2/core/core.hpp>
+#include <iostream>
 
 using namespace cv;
 
@@ -15,10 +16,13 @@ private:
     int orphanSlice;
     int sliceWidth;
     int sliceHeight;
+    int selectedFilter = 0;
+    double divisor = 9.0;
+    double offset = 0.0;
     double sharpen_kernel[3*3] = {
-      0.0, -1.0, 0.0,
-      -1.0,  5.0, -1.0,
-      0.0, -1.0, 0.0
+        0.0, -1.0, 0.0,
+        -1.0, 5.0, -1.0,
+        0.0, -1.0, 0.0
     };
     double blur_kernel[3*3] = {
       1.0, 1.0, 1.0,
@@ -46,6 +50,12 @@ private:
 public:
     void doSomething();
     void setNThreads(int);
+    int getSelectedFilter();
+    void setSelectedFilter(int);
+    double getDivisor();
+    void setDivisor(double);
+    double getOffset();
+    void setOffset(double);
     Mat getImage();
     void printMat();
     Mat splitMat(int, int, int, int);
@@ -54,11 +64,12 @@ public:
     inline static float CHECK_PIXEL(Mat mat, int x, int y, int l)
     {
         if ( (x < 0) || (x >= mat.cols) || (y < 0) || (y >= mat.rows) ) return 0;
-        return mat.at<Vec3b>(Point(x, y)).val[l];
-    };
+        return (float) (mat.at<Vec3b>(y, x)[l]);
+    }
 
     Filter(char*);
     Filter(char*, int);
+    Filter(char*, int, int);
     ~Filter();
 };
 
