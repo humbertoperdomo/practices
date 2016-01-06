@@ -1,10 +1,8 @@
-#include "filter.h"
-#include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+#include "filter.h"
 #include <iostream>
-#include <sstream>
-#include <thread>
+//#include <sstream>
+//#include <thread>
 //#include <chrono>
 #include <fstream>
 //#include "threadpool.h"
@@ -27,6 +25,13 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    if (argc == 3) {
+        istringstream nt(argv[2]);
+        if (!(nt >> nThreads)) {
+            nThreads = 1;
+        }
+    }
+
     if (argc == 4) {
         istringstream sf(argv[3]);
         if (!(sf >> selectedFilter)) {
@@ -39,12 +44,6 @@ int main(int argc, char** argv)
         }
     }
 
-    if (argc == 3) {
-        istringstream nt(argv[2]);
-        if (!(nt >> nThreads)) {
-            nThreads = 1;
-        }
-    }
 
     if (!fexists(argv[1])){
         cout << "No image data" << endl;
@@ -61,11 +60,9 @@ int main(int argc, char** argv)
 
     //Mat gray_image;
     //cvtColor(filter1.getImage(), gray_image, CV_BGR2GRAY);
-
     //imwrite("/home/humberto/Pictures/Gray_Image.jpg", gray_image);
 
-    namedWindow(imageName, CV_WINDOW_AUTOSIZE);
-    imshow(imageName, filter1.getImage());
+
 
     filter1.doSomething();
 

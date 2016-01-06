@@ -10,6 +10,7 @@ class Filter
 private:
     Mat image;
     Mat out_image;
+    char* imageName;
     int nThreads;
     int columns;
     int fullRows;
@@ -17,7 +18,7 @@ private:
     int sliceWidth;
     int sliceHeight;
     int selectedFilter = 0;
-    double divisor = 9.0;
+    double divisor = 1.0;
     double offset = 0.0;
     double sharpen_kernel[3*3] = {
         0.0, -1.0, 0.0,

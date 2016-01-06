@@ -18,47 +18,22 @@ Filter::Filter(char* imageName)
 
 Filter::Filter(char* imageName, int nThreads)
 {
-    image = imread(imageName, CV_LOAD_IMAGE_COLOR);
-    setNThreads(nThreads);
+    Filter(imageName, nThreads, 0);
     cout << "Filter constructor with imageName and thread number." << endl;
 }
 
 Filter::Filter(char* imageName, int nThreads, int selectedFilter)
 {
     image = imread(imageName, CV_LOAD_IMAGE_COLOR);
+    this->imageName = imageName;
     this->selectedFilter = selectedFilter;
+    out_image = image.clone();
     setNThreads(nThreads);
     cout << "Filter constructor with imageName, thread number and selected filter." << endl;
 }
 
 Filter::~Filter() {
     cout << "Filter destroyed." << endl;
-}
-
-void Filter::doSomething()
-{
-    cout << "doing something..." << endl;
-    for (int y = 0; y < fullRows; ++y)
-    {
-        for (int x = 0; x < columns; ++x)
-        {
-            //Mat sub(filter1.getImage(), Rect(x * width, y * sliceHeight, width, sliceHeight));
-            namedWindow("Splitted image"+to_string(y)+to_string(x), CV_WINDOW_AUTOSIZE);
-            imshow("Splitted image"+to_string(y)+to_string(x), filter(splitMat(x * sliceWidth, y * sliceHeight, sliceWidth, sliceHeight),filters[selectedFilter],1,divisor,offset));
-        }
-    }
-
-    if (orphanSlice > 0)
-    {
-        int orphanWidth = image.cols / orphanSlice;
-        for (int x = 0; x < orphanSlice; ++x)
-        {
-            //Mat sub(filter1.getImage(), Rect(x * orphanWidth, fullRows * sliceHeight, orphanWidth, sliceHeight));
-            namedWindow("Splitted image"+to_string(x), CV_WINDOW_AUTOSIZE);
-            imshow("Splitted image"+to_string(x), filter(splitMat(x * orphanWidth, fullRows * sliceHeight, orphanWidth, sliceHeight),filters[selectedFilter],1,divisor,offset));
-        }
-
-    }
 }
 
 void Filter::setNThreads(int nThreads)
@@ -69,6 +44,50 @@ void Filter::setNThreads(int nThreads)
     orphanSlice = nThreads % columns;
     sliceWidth =  image.cols / columns;
     sliceHeight = image.rows / (orphanSlice == 0 ? fullRows : (fullRows + 1));
+}
+
+void Filter::doSomething()
+{
+    namedWindow(imageName, CV_WINDOW_AUTOSIZE);
+    imshow(imageName, image);
+    if (nThreads == 1) {
+        filter(out_image, filters[selectedFilter],1,divisor,offset).copyTo(out_image);
+    } else {
+        cout << "fullRows = " << fullRows << ", columns = " << columns << ", orphanSlice = " << orphanSlice << ", sliceWidth = " << sliceWidth << endl;
+        for (int y = 0; y < fullRows; ++y)
+        {
+            for (int x = 0; x < columns; ++x)
+            {
+                filter(
+                    splitMat((x * sliceWidth) - ((x > 0) ? 1 : 0), // decide if x starts before in order to avoid blank lines
+                        (y * sliceHeight) - ((y > 0) ? 1 : 0), // decide if y starts before in order to avoid blank lines
+                        sliceWidth + (((x + 1) < columns && (x > 0)) ? 2 : 1), // decide width considering the starting x
+                        sliceHeight + ((orphanSlice > 0 || (y + 1) < fullRows || y > 0) ? (((orphanSlice > 0 && y > 0) || ((y + 1) < fullRows && y > 0)) ? 2 : 1) : 0)),
+                    filters[selectedFilter], 1, divisor, offset)
+                (Rect((x > 0) ? 1 : 0, (y > 0) ? 1 : 0, sliceWidth, sliceHeight))
+                .copyTo(out_image(Rect(x * sliceWidth, y * sliceHeight, sliceWidth, sliceHeight)));
+            }
+        }
+
+        if (orphanSlice > 0)
+        {
+            int orphanWidth = image.cols / orphanSlice;
+            for (int x = 0; x < orphanSlice; ++x)
+            {
+                filter(
+                    splitMat((x * orphanWidth) - ((x > 0) ? 1 : 0),
+                        (fullRows * sliceHeight) - 1,
+                        orphanWidth + (((x + 1) < orphanSlice && (x > 0)) ? 2 : (orphanSlice > 1 ? 1 : 0)),
+                        sliceHeight + 1),
+                    filters[selectedFilter], 1, divisor, offset)
+                (Rect((x > 0) ? 1 : 0, 1, orphanWidth, sliceHeight))
+                .copyTo(out_image(Rect(x * orphanWidth, fullRows * sliceHeight, orphanWidth, sliceHeight)));
+            }
+
+        }
+    }
+    namedWindow("Temp image", CV_WINDOW_AUTOSIZE);
+    imshow("Temp image", out_image);
 }
 
 Mat Filter::getImage()
@@ -85,6 +104,8 @@ void Filter::printMat()
 
 Mat Filter::splitMat(int x, int y, int w, int h)
 {
+    // Debug
+    //cout << "x = " << x << ", y = " << y << ", w = " << w << ", h = " << h << endl;
     Mat subImage(image, Rect(x, y, w, h));
     return  subImage;
 }
