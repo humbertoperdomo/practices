@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="FinalProject.jnlp">
+  <information>
+    <title>FinalProject</title>
+    <vendor>humberto</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" java-vm-args="-Djava.library.path=/usr/local/share/OpenCV/java "  href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="FinalProject.jar" size="12185" download="eager" />
+    <jar href="lib/log4j-api-2.5.jar" size="146761" download="eager" />
+    <jar href="lib/log4j-core-2.5.jar" size="1106090" download="eager" />
+    <jar href="lib/opencv-300.jar" size="299821" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="FinalProject" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="mx.naui.concurrentprogramming.FinalProject"  name="FinalProject" />
+  <update check="always"/>
+</jnlp>
