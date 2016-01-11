@@ -1,7 +1,7 @@
 package mx.naui.concurrentprogramming;
 
-import java.awt.Desktop;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -26,19 +26,27 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import org.apache.logging.log4j.*;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
 
 /**
  *
  * @author humberto
  */
 public class FinalProject extends Application {
+  
+  static {
+    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+  }
 
   private static final Logger logger = LogManager.getLogger(FinalProject.class);
   private Stage window;
+  private Scene mainScene, filterScene;
   private final VBox vbox = new VBox();
   private final ImageView pic = new ImageView();
+  private Filter filter;
   private final Label name = new Label();
-  private Desktop desktop = Desktop.getDesktop();
 
   @Override
   public void start(Stage primaryStage) {
@@ -49,8 +57,8 @@ public class FinalProject extends Application {
       closeProgram();
     });
 
-    Scene scene = new Scene(new VBox(), 500, 400);
-    scene.setFill(Color.OLDLACE);
+    mainScene = new Scene(new VBox(), 500, 400);
+    mainScene.setFill(Color.OLDLACE);
 
     name.setFont(new Font("Verdana Bold", 22));
     pic.setFitHeight(300);
@@ -61,6 +69,8 @@ public class FinalProject extends Application {
     vbox.setSpacing(10);
     vbox.setPadding(new Insets(0, 10, 0, 10));
     vbox.getChildren().addAll(name, pic);
+    
+    
 
     // --- Menu File
     Menu menuFile = new Menu("File");
@@ -89,20 +99,33 @@ public class FinalProject extends Application {
     
     // --- Menu Edit
     Menu menuEdit = new Menu("Edit");
+    MenuItem menuFilter = new MenuItem("Picture Filter");
+    menuFilter.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
+    menuFilter.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent event) {
+        logger.debug("Hello World!");
+        openFilterWindow();
+        logger.debug("Filter applied!");
+      }
+    });
+    /*
     Menu menuFilter = new Menu("Picture Filter");
-    //Picture Effect menu
+    //Picture Filter menu
     final ToggleGroup groupFilter = new ToggleGroup();
     RadioMenuItem itemFilter = new RadioMenuItem("Identity");
     itemFilter.setUserData(null);
     itemFilter.setToggleGroup(groupFilter);
     menuFilter.getItems().add(itemFilter);
+    */
 
-    menuEdit.getItems().addAll(menuFilter);
+    menuEdit.getItems().add(menuFilter);
     
     
     // --- Menu View
     Menu menuView = new Menu("View");
-    CheckMenuItem titleView = createMenuItem("Title", name);
+    CheckMenuItem titleView = createMenuItem("Name", name);
     CheckMenuItem picView = createMenuItem("Picture", pic);
     picView.setDisable(true);
     menuView.getItems().addAll(titleView, picView);
@@ -110,9 +133,9 @@ public class FinalProject extends Application {
 
     menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
 
-    ((VBox) scene.getRoot()).getChildren().addAll(menuBar, vbox);
+    ((VBox) mainScene.getRoot()).getChildren().addAll(menuBar, vbox);
 
-    window.setScene(scene);
+    window.setScene(mainScene);
 
     window.show();
   }
@@ -154,6 +177,22 @@ public class FinalProject extends Application {
     });
     return cmi;
   }
+  
+  public BufferedImage toBufferedImage(Mat matrix) {
+    int type = BufferedImage.TYPE_BYTE_GRAY;
+    if (matrix.channels() > 1) {
+      type = BufferedImage.TYPE_3BYTE_BGR;
+    }
+    int bufferSize = matrix.channels() * matrix.cols() * matrix.rows();
+    byte[] buffer = new byte[bufferSize];
+    matrix.get(0, 0, buffer); // get all the pixels
+    BufferedImage image = new BufferedImage(matrix.cols(), matrix.
+            rows(), type);
+    final byte[] targetPixels = ((DataBufferByte) image.getRaster().
+            getDataBuffer()).getData();
+    System.arraycopy(buffer, 0, targetPixels, 0, buffer.length);
+    return image;
+  }
 
   EventHandler<ActionEvent> menuLoadEventListener
           = new EventHandler<ActionEvent>() {
@@ -171,16 +210,24 @@ public class FinalProject extends Application {
       File file = fileChooser.showOpenDialog(null);
 
       try {
+        // TODO Quiero usar un solo objeto para paso de parametros ie path
+        
+        filter = new Filter(file.getPath());
+        //filter.setSelectedFilter(5);
+        //filter.setNSlices(13);
+        //filter.doSomething();
         BufferedImage bufferedImage = ImageIO.read(file);
-        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+        Image image = SwingFXUtils.toFXImage(bufferedImage, null); //toBufferedImage(filter.getOutImage())
         pic.setImage(image);
         name.setText(file.getName());
         vbox.setVisible(true);
       } catch (IOException ex) {
         logger.error(ex);
       }
-
     }
   };
 
+  public void openFilterWindow() {
+    FilterWindow.display("Filter Selection", "Select a filter", filter);
+  }
 }

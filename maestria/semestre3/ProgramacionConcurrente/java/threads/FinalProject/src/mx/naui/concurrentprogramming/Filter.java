@@ -166,7 +166,7 @@ public class Filter {
                           ((rowSlices * sliceHeight) - 1),
                           (orphanWidth + (((x + 1) < orphanSlice && (x > 0)) ? 2 : (orphanSlice > 1 ? 1 : 0))),
                           (sliceHeight + 1)),
-                  filters[new Random().nextInt(9)], 1, divisor, offset),
+                  filters[selectedFilter], 1, divisor, offset), //new Random().nextInt(9) instead selectedFilter 
                   (new Rect((x > 0) ? 1 : 0, 1, orphanWidth, sliceHeight))
           )
                   .copyTo(outImage.submat(new Rect(x * orphanWidth, rowSlices * sliceHeight, orphanWidth, sliceHeight)));
