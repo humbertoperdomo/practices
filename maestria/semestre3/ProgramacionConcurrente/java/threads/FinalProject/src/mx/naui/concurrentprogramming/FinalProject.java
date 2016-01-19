@@ -35,17 +35,17 @@ import org.opencv.imgcodecs.Imgcodecs;
  * @author humberto
  */
 public class FinalProject extends Application {
-  
+
   static {
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
   }
 
   private static final Logger logger = LogManager.getLogger(FinalProject.class);
   private Stage window;
-  private Scene mainScene, filterScene;
+  private Scene mainScene;
   private final VBox vbox = new VBox();
   private final ImageView pic = new ImageView();
-  private Filter filter;
+  private Splitter filter;
   private final Label name = new Label();
 
   @Override
@@ -57,11 +57,11 @@ public class FinalProject extends Application {
       closeProgram();
     });
 
-    mainScene = new Scene(new VBox(), 500, 400);
+    mainScene = new Scene(new VBox(), 700, 450);
     mainScene.setFill(Color.OLDLACE);
 
     name.setFont(new Font("Verdana Bold", 22));
-    pic.setFitHeight(300);
+    pic.setFitHeight(350);
     pic.setPreserveRatio(true);
 
     MenuBar menuBar = new MenuBar();
@@ -69,15 +69,50 @@ public class FinalProject extends Application {
     vbox.setSpacing(10);
     vbox.setPadding(new Insets(0, 10, 0, 10));
     vbox.getChildren().addAll(name, pic);
-    
-    
+
+    // --- Menu Edit
+    Menu menuEdit = new Menu("Edit");
+    MenuItem menuFilter = new MenuItem("Picture Filter");
+    menuFilter.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
+    menuFilter.setDisable(true);
+    menuFilter.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent event) {
+        openFilterWindow();
+      }
+    });
+
+    menuEdit.getItems().add(menuFilter);
 
     // --- Menu File
     Menu menuFile = new Menu("File");
 
     MenuItem menuOpen = new MenuItem("Open");
     menuOpen.setAccelerator(KeyCombination.keyCombination("Ctrl+O"));
-    menuOpen.setOnAction(menuLoadEventListener);
+    //menuOpen.setOnAction(menuLoadEventListener);
+    menuOpen.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent t) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("View Pictures");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg");
+        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
+        fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+
+        //Show open file dialog
+        File file = fileChooser.showOpenDialog(null);
+
+        filter = new Splitter(file.getPath());
+        Image image = SwingFXUtils.toFXImage(toBufferedImage(filter.getImage()), null);
+        pic.setImage(image);
+        name.setText(file.getName());
+        vbox.setVisible(true);
+        menuFilter.setDisable(false);
+      }
+    });
 
     MenuItem menuClear = new MenuItem("Clear");
     menuClear.setAccelerator(KeyCombination.keyCombination("Ctrl+X"));
@@ -87,6 +122,8 @@ public class FinalProject extends Application {
         vbox.setVisible(false);
         pic.setImage(null);
         name.setText(null);
+        filter = null;
+        menuFilter.setDisable(true);
       }
     });
 
@@ -96,40 +133,12 @@ public class FinalProject extends Application {
 
     menuFile.getItems().addAll(menuOpen, menuClear, new SeparatorMenuItem(), menuExit);
 
-    
-    // --- Menu Edit
-    Menu menuEdit = new Menu("Edit");
-    MenuItem menuFilter = new MenuItem("Picture Filter");
-    menuFilter.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
-    menuFilter.setOnAction(new EventHandler<ActionEvent>() {
-
-      @Override
-      public void handle(ActionEvent event) {
-        logger.debug("Hello World!");
-        openFilterWindow();
-        logger.debug("Filter applied!");
-      }
-    });
-    /*
-    Menu menuFilter = new Menu("Picture Filter");
-    //Picture Filter menu
-    final ToggleGroup groupFilter = new ToggleGroup();
-    RadioMenuItem itemFilter = new RadioMenuItem("Identity");
-    itemFilter.setUserData(null);
-    itemFilter.setToggleGroup(groupFilter);
-    menuFilter.getItems().add(itemFilter);
-    */
-
-    menuEdit.getItems().add(menuFilter);
-    
-    
     // --- Menu View
     Menu menuView = new Menu("View");
     CheckMenuItem titleView = createMenuItem("Name", name);
     CheckMenuItem picView = createMenuItem("Picture", pic);
     picView.setDisable(true);
     menuView.getItems().addAll(titleView, picView);
-    
 
     menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
 
@@ -177,7 +186,7 @@ public class FinalProject extends Application {
     });
     return cmi;
   }
-  
+
   public BufferedImage toBufferedImage(Mat matrix) {
     int type = BufferedImage.TYPE_BYTE_GRAY;
     if (matrix.channels() > 1) {
@@ -194,7 +203,7 @@ public class FinalProject extends Application {
     return image;
   }
 
-  EventHandler<ActionEvent> menuLoadEventListener
+  /*EventHandler<ActionEvent> menuLoadEventListener
           = new EventHandler<ActionEvent>() {
     @Override
     public void handle(ActionEvent t) {
@@ -209,24 +218,18 @@ public class FinalProject extends Application {
       //Show open file dialog
       File file = fileChooser.showOpenDialog(null);
 
-      try {
-        // TODO Quiero usar un solo objeto para paso de parametros ie path
-        
+      //try {
         filter = new Filter(file.getPath());
-        //filter.setSelectedFilter(5);
-        //filter.setNSlices(13);
-        //filter.doSomething();
-        BufferedImage bufferedImage = ImageIO.read(file);
-        Image image = SwingFXUtils.toFXImage(bufferedImage, null); //toBufferedImage(filter.getOutImage())
+        //BufferedImage bufferedImage = ImageIO.read(file);
+        Image image = SwingFXUtils.toFXImage(toBufferedImage(filter.getImage()), null);
         pic.setImage(image);
         name.setText(file.getName());
         vbox.setVisible(true);
-      } catch (IOException ex) {
-        logger.error(ex);
-      }
+      //} catch (IOException ex) {
+      //  logger.error(ex);
+      //}
     }
-  };
-
+  };*/
   public void openFilterWindow() {
     FilterWindow.display("Filter Selection", "Select a filter", filter);
   }

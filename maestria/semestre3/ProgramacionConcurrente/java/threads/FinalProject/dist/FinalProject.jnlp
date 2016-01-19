@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" java-vm-args="-Djava.library.path=/usr/local/share/OpenCV/java "  href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="FinalProject.jar" size="15770" download="eager" />
+    <jar href="FinalProject.jar" size="25584" download="eager" />
     <jar href="lib/log4j-api-2.5.jar" size="146761" download="eager" />
     <jar href="lib/log4j-core-2.5.jar" size="1106090" download="eager" />
     <jar href="lib/opencv-300.jar" size="299821" download="eager" />
