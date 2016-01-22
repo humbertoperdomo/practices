@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javax.imageio.ImageIO;
 import org.apache.logging.log4j.*;
 import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
 
 /**
  *
@@ -55,7 +56,7 @@ public class FilterWindow {
         filter.setDivisor(Double.parseDouble(divisor.getText()));
         filter.setOffset(Double.parseDouble(offset.getText()));
         filter.setSelectedFilter(filterComboBox.getValue().getIndex());
-        filter.setNSlices(10);
+        filter.setNSlices(1);
         filter.doSomething();
         displayImage(filter.getOutImage());
         logger.debug("Filter applied!");
@@ -87,12 +88,7 @@ public class FilterWindow {
         logger.debug(pic.getId());
         File file = fileChooser.showSaveDialog(window);
         if (file != null) {
-          try {
-            ImageIO.write(SwingFXUtils.fromFXImage(pic.getImage(),
-                    null), "png", file);
-          } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-          }
+          Imgcodecs.imwrite(file.getPath(), filter.getOutImage());
         }
       }
     }

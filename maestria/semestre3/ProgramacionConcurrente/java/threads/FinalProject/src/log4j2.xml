@@ -6,9 +6,6 @@
     </Console>
   </Appenders>
   <Loggers>
-    <Logger name="mx.naui.concurrentprogramming.Splitter" level="trace" additivity="false">
-      <AppenderRef ref="Console"/>
-    </Logger>
     <Logger name="mx.naui.concurrentprogramming.Filter" level="trace" additivity="false">
       <AppenderRef ref="Console"/>
     </Logger>
