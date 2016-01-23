@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,6 +16,8 @@ import javafx.scene.control.*;
 import javafx.geometry.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javax.imageio.ImageIO;
@@ -30,7 +34,7 @@ public class FilterWindow {
   private static final Logger logger = LogManager.getLogger(FilterWindow.class);
   private static final ImageView pic = new ImageView();
 
-  public static void display(String title, String message, Splitter filter) {
+  public static void display(String title, String message, Splitter splitter) {
     Stage window = new Stage();
     //Block events to other window
     window.initModality(Modality.APPLICATION_MODAL);
@@ -47,19 +51,31 @@ public class FilterWindow {
     NumberTextField offset = new NumberTextField("0", 2);
     offset.setMaxWidth(40);
 
-    Button applyButton = new Button("Apply");
+    final CheckBox preserveChanges = new CheckBox();
+    preserveChanges.setSelected(false);
+
+    Slider slides = new Slider(1.0, 20.0, 1.0);
+    slides.setShowTickLabels(true);
+    slides.setMajorTickUnit(1);
+    slides.setMinorTickCount(1);
+    slides.setBlockIncrement(1);
+    slides.setDisable(((splitter.getImage().cols() >= 300) && (splitter.getImage().rows() >= 300)) ? false : true);
+
+    final Button applyButton = new Button("Apply");
     applyButton.setDefaultButton(true);
     applyButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent event) {
-        filter.setDivisor(Double.parseDouble(divisor.getText()));
-        filter.setOffset(Double.parseDouble(offset.getText()));
-        filter.setSelectedFilter(filterComboBox.getValue().getIndex());
-        filter.setNSlices(1);
-        filter.doSomething();
-        displayImage(filter.getOutImage());
+        splitter.setDivisor(Double.parseDouble(divisor.getText()));
+        splitter.setOffset(Double.parseDouble(offset.getText()));
+        splitter.setSelectedFilter(filterComboBox.getValue());
+        splitter.setPreservingChanges(preserveChanges.isSelected());
+        splitter.setNSlices(slides.isDisable() ? 1 : (int)slides.getValue());
+        logger.debug("Starting Filter");
+        splitter.doSomething();
         logger.debug("Filter applied!");
+        displayImage(splitter.getOutImage());
       }
     });
 
@@ -73,11 +89,15 @@ public class FilterWindow {
     leftMenu.add(divisor, 1, 1);
     leftMenu.add(new Label("Offset: "), 0, 2);
     leftMenu.add(offset, 1, 2);
-    leftMenu.add(applyButton, 1, 3);
+    leftMenu.add(new Label("Preserve changes: "), 0, 3);
+    leftMenu.add(preserveChanges, 1, 3);
+    leftMenu.add(new Label("Slides: "), 0, 4);
+    leftMenu.add(slides, 1, 4);
+    leftMenu.add(applyButton, 1, 5);
 
     pic.setFitHeight(300);
     pic.setPreserveRatio(true);
-    displayImage(filter.getOutImage());
+    displayImage(splitter.getOutImage());
 
     final ContextMenu cm = new ContextMenu();
     MenuItem cmItem = new MenuItem("Save Image");
@@ -88,7 +108,7 @@ public class FilterWindow {
         logger.debug(pic.getId());
         File file = fileChooser.showSaveDialog(window);
         if (file != null) {
-          Imgcodecs.imwrite(file.getPath(), filter.getOutImage());
+          Imgcodecs.imwrite(file.getPath(), splitter.getOutImage());
         }
       }
     }
@@ -118,6 +138,14 @@ public class FilterWindow {
 
     //Display window and wait for it to be closed before returning
     Scene scene = new Scene(borderPane);
+    scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+      @Override
+      public void handle(KeyEvent evt) {
+        if (evt.getCode().equals(KeyCode.ESCAPE)) {
+          window.close();
+        }
+      }
+    });
     window.setScene(scene);
     window.showAndWait();
   }

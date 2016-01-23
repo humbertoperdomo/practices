@@ -45,7 +45,7 @@ public class FinalProject extends Application {
   private Scene mainScene;
   private final VBox vbox = new VBox();
   private final ImageView pic = new ImageView();
-  private Splitter filter;
+  private Splitter splitter;
   private final Label name = new Label();
 
   @Override
@@ -105,8 +105,8 @@ public class FinalProject extends Application {
         //Show open file dialog
         File file = fileChooser.showOpenDialog(null);
 
-        filter = new Splitter(file.getPath());
-        Image image = SwingFXUtils.toFXImage(toBufferedImage(filter.getImage()), null);
+        splitter = new Splitter(file.getPath());
+        Image image = SwingFXUtils.toFXImage(toBufferedImage(splitter.getImage()), null);
         pic.setImage(image);
         name.setText(file.getName());
         vbox.setVisible(true);
@@ -122,7 +122,7 @@ public class FinalProject extends Application {
         vbox.setVisible(false);
         pic.setImage(null);
         name.setText(null);
-        filter = null;
+        splitter = null;
         menuFilter.setDisable(true);
       }
     });
@@ -231,6 +231,6 @@ public class FinalProject extends Application {
     }
   };*/
   public void openFilterWindow() {
-    FilterWindow.display("Filter Selection", "Select a filter", filter);
+    FilterWindow.display("Filter Selection", "Select a filter", splitter);
   }
 }
