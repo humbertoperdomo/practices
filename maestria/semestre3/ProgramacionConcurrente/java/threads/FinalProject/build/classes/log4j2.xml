@@ -9,9 +9,6 @@
     <Logger name="mx.naui.concurrentprogramming.FilterWindow" level="trace" additivity="false">
       <AppenderRef ref="Console"/>
     </Logger>
-    <Logger name="mx.naui.concurrentprogramming.Splitter" level="trace" additivity="false">
-      <AppenderRef ref="Console"/>
-    </Logger>
     <Root level="error">
       <AppenderRef ref="Console"/>
     </Root>

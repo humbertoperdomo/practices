@@ -100,11 +100,11 @@ public class Splitter {
   public void setKernelSize(int kernelSize) {
     this.kernelSize = kernelSize;
   }
-  
+
   public void setPreservingChanges(boolean preservingChanges) {
     this.preservingChanges = preservingChanges;
   }
-  
+
   public boolean isPreservingChanges() {
     return preservingChanges;
   }
@@ -127,17 +127,10 @@ public class Splitter {
 
   public void doSomething() {
     Mat auxImage = image;  // Always use original image as default
-    if (isPreservingChanges()){ // if user wants to preserve changes use 
+    if (isPreservingChanges()) { // if user wants to preserve changes use 
       modifiedImage = outImage.clone();
       auxImage = modifiedImage;
     }
-    int columnSlices = (int) Math.ceil(Math.sqrt(nSlices));
-    int rowSlices = nSlices / columnSlices;
-    int orphanSlice = nSlices % columnSlices;
-    int sliceWidth = auxImage.cols() / columnSlices;
-    int sliceHeight = auxImage.rows() / (orphanSlice == 0 ? rowSlices : (rowSlices + 1));
-    logger.debug("rowSlices = {}, columnSlices = {}, orphanSlice = {}, sliceWidth = {}, sliceHeight = {}",
-            rowSlices, columnSlices, orphanSlice, sliceWidth, sliceHeight);
 
     if (nSlices == 1) {
       if (selectedFilter != Kernel.HSV) {
@@ -150,6 +143,13 @@ public class Splitter {
         filterHSV(auxImage).copyTo(outImage);
       }
     } else {
+      int columnSlices = (int) Math.ceil(Math.sqrt(nSlices));
+      int rowSlices = nSlices / columnSlices;
+      int orphanSlice = nSlices % columnSlices;
+      int sliceWidth = auxImage.cols() / columnSlices;
+      int sliceHeight = auxImage.rows() / (orphanSlice == 0 ? rowSlices : (rowSlices + 1));
+      logger.debug("rowSlices = {}, columnSlices = {}, orphanSlice = {}, sliceWidth = {}, sliceHeight = {}",
+              rowSlices, columnSlices, orphanSlice, sliceWidth, sliceHeight);
       executor = Executors.newFixedThreadPool((nSlices > 1) ? nSlices / 2 : 1);
 
       if (selectedFilter != Kernel.HSV) {
@@ -413,6 +413,55 @@ public class Splitter {
       hdivTable256[i] = (int) ((256 << HSV_SHIFT) / (6.0 * i));
     }
     initialized = true;
+  }
+
+  public void changeHSV(int hsv, int newVal) {
+    Mat auxImage = image;  // Always use original image as default
+    if (isPreservingChanges()) { // if user wants to preserve changes use 
+      modifiedImage = outImage.clone();
+      auxImage = modifiedImage;
+    }
+    int columnSlices = (int) Math.ceil(Math.sqrt(nSlices));
+    int rowSlices = nSlices / columnSlices;
+    int orphanSlice = nSlices % columnSlices;
+    int sliceWidth = auxImage.cols() / columnSlices;
+    int sliceHeight = auxImage.rows() / (orphanSlice == 0 ? rowSlices : (rowSlices + 1));
+    logger.debug("rowSlices = {}, columnSlices = {}, orphanSlice = {}, sliceWidth = {}, sliceHeight = {}",
+            rowSlices, columnSlices, orphanSlice, sliceWidth, sliceHeight);
+
+    executor = Executors.newFixedThreadPool((nSlices > 1) ? nSlices / 2 : 1);
+    for (int y = 0; y < rowSlices; ++y) {
+      for (int x = 0; x < columnSlices; ++x) {
+        executor.submit(new HSVFilter(this,
+                splitMat(auxImage,
+                        (x * sliceWidth),
+                        (y * sliceHeight),
+                        sliceWidth,
+                        sliceHeight),
+                x, y,
+                sliceWidth, sliceHeight, hsv, newVal));
+      }
+    }
+
+    if (orphanSlice > 0) {
+      int orphanWidth = auxImage.cols() / orphanSlice;
+      for (int x = 0; x < orphanSlice; ++x) {
+        executor.submit(new HSVFilter(this,
+                splitMat(auxImage,
+                        (x * orphanWidth),
+                        (rowSlices * sliceHeight),
+                        orphanWidth,
+                        sliceHeight),
+                x, rowSlices,
+                orphanWidth, sliceHeight, hsv, newVal));
+      }
+    }
+    executor.shutdown();
+    try {
+      executor.awaitTermination(30, TimeUnit.SECONDS);
+    } catch (InterruptedException ex) {
+      logger.error(ex);
+    }
   }
 
 }

@@ -41,9 +41,6 @@ public class FilterWindow {
     window.setTitle(title);
     window.setMinWidth(250);
 
-    final ComboBox<Kernel> filterComboBox = new ComboBox();
-    filterComboBox.getItems().addAll(Kernel.values());
-    filterComboBox.setValue(Kernel.IDENTITY);
 
     NumberTextField divisor = new NumberTextField("1", 2);
     divisor.setMaxWidth(40);
@@ -53,14 +50,102 @@ public class FilterWindow {
 
     final CheckBox preserveChanges = new CheckBox();
     preserveChanges.setSelected(false);
+    preserveChanges.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        public void changed(ObservableValue<? extends Boolean> ov,
+            Boolean old_val, Boolean new_val) {
+                splitter.setPreservingChanges(new_val);
+        }
+    });
 
-    Slider slides = new Slider(1.0, 20.0, 1.0);
-    slides.setShowTickLabels(true);
-    slides.setMajorTickUnit(1);
-    slides.setMinorTickCount(1);
-    slides.setBlockIncrement(1);
-    slides.setDisable(((splitter.getImage().cols() >= 300) && (splitter.getImage().rows() >= 300)) ? false : true);
+    Slider slices = new Slider(1.0, 40.0, 1.0);
+    slices.setShowTickLabels(true);
+    slices.setMajorTickUnit(1);
+    slices.setMinorTickCount(1);
+    slices.setBlockIncrement(1);
+    slices.setDisable(((splitter.getImage().cols() >= 300) && (splitter.getImage().rows() >= 300)) ? false : true);
+    slices.valueProperty().addListener(new ChangeListener<Number>() {
+      public void changed(ObservableValue<? extends Number> ov,
+              Number old_val, Number new_val) {
+        splitter.setNSlices(new_val.intValue());
+      }
+    });
 
+    final Slider hue = new Slider(0.0, 255.0, 0.0);
+    //hue.setShowTickLabels(true);
+    hue.setMajorTickUnit(1);
+    hue.setMinorTickCount(1);
+    hue.setBlockIncrement(15);
+    hue.setDisable(splitter.getSelectedFilter() != Kernel.HSV);
+    
+    hue.valueProperty().addListener(new ChangeListener<Number>() {
+      public void changed(ObservableValue<? extends Number> ov,
+              Number old_val, Number new_val) {
+        logger.debug("Starting change of hue");
+        splitter.changeHSV(0, 
+                (old_val.intValue() > new_val.intValue()) ? (Math.abs(old_val.intValue() - new_val.intValue()) * -1) : Math.abs(new_val.intValue() - old_val.intValue()));
+        logger.debug("Hue changed");
+        displayImage(splitter.getOutImage()); 
+      }
+    });
+
+    Slider saturation = new Slider(0.0, 255.0, 0.0);
+    //saturation.setShowTickLabels(true);
+    saturation.setMajorTickUnit(1);
+    saturation.setMinorTickCount(1);
+    saturation.setBlockIncrement(15);
+    saturation.setDisable(splitter.getSelectedFilter() != Kernel.HSV);
+    
+    saturation.valueProperty().addListener(new ChangeListener<Number>() {
+      public void changed(ObservableValue<? extends Number> ov,
+              Number old_val, Number new_val) {
+        logger.debug("Starting change of saturation");
+        splitter.changeHSV(1, 
+                (old_val.intValue() > new_val.intValue()) ? (Math.abs(old_val.intValue() - new_val.intValue()) * -1) : Math.abs(new_val.intValue() - old_val.intValue()));
+        logger.debug("Saturation changed");
+        displayImage(splitter.getOutImage());
+      }
+    });
+
+    Slider value = new Slider(0.0, 255.0, 0.0);
+    //value.setShowTickLabels(true);
+    value.setMajorTickUnit(1);
+    value.setMinorTickCount(1);
+    value.setBlockIncrement(15);
+    value.setDisable(splitter.getSelectedFilter() != Kernel.HSV);
+    
+    value.valueProperty().addListener(new ChangeListener<Number>() {
+      public void changed(ObservableValue<? extends Number> ov,
+              Number old_val, Number new_val) {
+        logger.debug("Starting change of value");
+        splitter.changeHSV(2, 
+                (old_val.intValue() > new_val.intValue()) ? (Math.abs(old_val.intValue() - new_val.intValue()) * -1) : Math.abs(new_val.intValue() - old_val.intValue()));
+        logger.debug("Value changed");
+        displayImage(splitter.getOutImage());
+      }
+    });
+
+    final ComboBox<Kernel> filterComboBox = new ComboBox();
+    filterComboBox.getItems().addAll(Kernel.values());
+    filterComboBox.setValue(Kernel.IDENTITY);
+    filterComboBox.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent event) {
+        if (filterComboBox.getValue() != Kernel.HSV){
+          hue.setDisable(true);
+          saturation.setDisable(true);
+          value.setDisable(true);
+        } else {
+          hue.setDisable(false);
+          hue.setValue(0.0);
+          saturation.setDisable(false);
+          saturation.setValue(0.0);
+          value.setDisable(false);
+          value.setValue(0.0);
+        }
+      }
+    });
+    
     final Button applyButton = new Button("Apply");
     applyButton.setDefaultButton(true);
     applyButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -70,12 +155,18 @@ public class FilterWindow {
         splitter.setDivisor(Double.parseDouble(divisor.getText()));
         splitter.setOffset(Double.parseDouble(offset.getText()));
         splitter.setSelectedFilter(filterComboBox.getValue());
-        splitter.setPreservingChanges(preserveChanges.isSelected());
-        splitter.setNSlices(slides.isDisable() ? 1 : (int)slides.getValue());
+        //splitter.setPreservingChanges(preserveChanges.isSelected());
+        splitter.setNSlices(slices.isDisable() ? 1 : (int) slices.getValue());
         logger.debug("Starting Filter");
         splitter.doSomething();
         logger.debug("Filter applied!");
         displayImage(splitter.getOutImage());
+        if (filterComboBox.getValue() == Kernel.HSV) {
+          preserveChanges.setSelected(true);
+          hue.setValue(0.0);
+          saturation.setValue(0.0);
+          value.setValue(0.0);
+        }
       }
     });
 
@@ -92,8 +183,14 @@ public class FilterWindow {
     leftMenu.add(new Label("Preserve changes: "), 0, 3);
     leftMenu.add(preserveChanges, 1, 3);
     leftMenu.add(new Label("Slides: "), 0, 4);
-    leftMenu.add(slides, 1, 4);
+    leftMenu.add(slices, 1, 4);
     leftMenu.add(applyButton, 1, 5);
+    leftMenu.add(new Label("Hue: "), 0, 6);
+    leftMenu.add(hue, 1, 6);
+    leftMenu.add(new Label("Saturation: "), 0, 7);
+    leftMenu.add(saturation, 1, 7);
+    leftMenu.add(new Label("Value: "), 0, 8);
+    leftMenu.add(value, 1, 8);
 
     pic.setFitHeight(300);
     pic.setPreserveRatio(true);
