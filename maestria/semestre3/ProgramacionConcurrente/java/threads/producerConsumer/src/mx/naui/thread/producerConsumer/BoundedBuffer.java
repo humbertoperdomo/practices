@@ -14,7 +14,7 @@ public class BoundedBuffer implements Buffer {
   private final Condition canWrite = accessLock.newCondition();
   private final Condition canRead = accessLock.newCondition();
 
-  privare char[] buffer; // shared by producer and consumer threads
+  private char[] buffer; // shared by producer and consumer threads
   private int bMaxSize;// max buffer size
   private int frontPointer = 0;  // front pointer
   private int rearPointer = 0;  // rear pointer
@@ -43,7 +43,7 @@ public class BoundedBuffer implements Buffer {
         canWrite.await(); // wait until buffer has space
       }
 
-      buffer[rearPointer] = c; // set new buffer value
+      buffer[rearPointer] = value; // set new buffer value
       rearPointer = (rearPointer + 1)%bMaxSize;
 
       // indicate producer that one more cell is occupied

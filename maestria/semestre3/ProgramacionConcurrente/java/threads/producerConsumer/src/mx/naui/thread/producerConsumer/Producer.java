@@ -15,7 +15,7 @@ public class Producer implements Runnable {
   @Override
   public void run() {
     //int sum = 0;
-    for (int count = 33; count <= 42; count++) {
+    for (int count = 33; count <= 57; count++) {
       try { // sleep 0 to 3 seconds, then place value uin Buffer
         Thread.sleep(generator.nextInt(3000)); // random sleep
         sharedLocation.blockingPut((char)count); // set value in Buffer

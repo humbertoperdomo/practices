@@ -16,7 +16,7 @@ public class Consumer implements Runnable {
   public void run() {
     int sum = 0;
 
-    for (int count = 1; count <= 10; count++) {
+    for (int count = 1; count <= 25; count++) {
       // sleep 0 to 3 seconds, read value from buffer and add to sum
       try {
         Thread.sleep(generator.nextInt(3000));
