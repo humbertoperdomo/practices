@@ -1,0 +1,38 @@
+package mx.naui.cmu.string;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ * Unit test for simple App.
+ */
+public class StringOptimizationTest 
+    extends TestCase
+{
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public StringOptimizationTest( String testName )
+    {
+        super( testName );
+    }
+
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite()
+    {
+        return new TestSuite( StringOptimizationTest.class );
+    }
+
+    /**
+     * Rigourous Test :-)
+     */
+    public void testStringOptimization()
+    {
+        assertTrue( true );
+    }
+}
