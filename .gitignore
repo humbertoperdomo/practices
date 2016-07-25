@@ -1,10 +1,10 @@
 *.class
-build/*
-Release/*
-Debug/*
-bin/*
-build-*-Debug/*
-target/*
+build/
+Release/
+Debug/
+bin/
+build-*-Debug/
+target/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
