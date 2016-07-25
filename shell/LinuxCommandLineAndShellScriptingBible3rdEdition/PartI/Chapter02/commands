@@ -1,0 +1,3 @@
+setterm [-background <color> | -foreground <color> | -inversescreen <on or off> | -reset | -store]
+
+
