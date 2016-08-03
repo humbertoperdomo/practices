@@ -1,0 +1,64 @@
+ps - report a snapshot of the current processes
+  Unix parameters
+  -e  Select all processes.
+  -f  Do full-format listing.
+  -l  Long format.
+  BSD parameters
+  a   List all processes with a terminal.
+  f   ASCII art process hierarchy (forest).
+  u   Display user-oriented format.
+  x   List all process owned by you
+  GNU parameters
+  --forest  ASCII art process tree.
+
+top - display linux processes
+
+kill - terminate a process
+  -s  The signal to send.
+  Process signals
+  9  KILL  Unconditionally terminates
+  15 TERM  Terminates if possible
+  17 STOP  Stops unconditionally, but doesn't terminate
+
+killall - kill processes by name
+
+mount - mount a filesystem 
+  e.g.
+   sudo mount -t vfat /dev/sdb1 /run/media/humberto/external -o uid=1000,gid=1000,utf8,dmask=027,fmask=137
+
+umount - unmount file systems
+
+df - report file system disk space usage
+  -h   print sizes in powers of 1024.
+
+du - estimate file space usage
+  -c  produce a grand total
+  -h  print size in human readable format
+  -s  display only a total for each argument
+
+sort - sort lines of test files
+  -n  compare according to string numerical value
+  -M  month sort (unknown < 'JAN' < ... < 'DEC'
+  -k  sort via key; KEYDEF gives location and type
+  -r  reverse the result of comparisons
+  -t  use SEP instead of non-blank to blank transition
+  
+  e.g.
+   sort -t ':' -k 3 -n /etc/passwd
+   du -sh | sort -nr
+
+grep - print lines matching a pattern
+  -c  Suppress normal output; instead print a count of matching lines for each
+      input file
+  -v  invert the sense of matching, to select non-matching lines.
+  -n  prefix each line of output with 1-based line number within its input file
+  -e  use PATTERN as pattern.
+
+  e.g.
+   grep -e t -e f file1
+   grep [ft] file1
+
+gzip - compress or expand files
+
+tar - The GNU version of the tar archiving utility
+
