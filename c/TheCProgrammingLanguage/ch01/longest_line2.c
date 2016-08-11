@@ -8,7 +8,7 @@ char longest[MAXLINE];
 int getLine(void);
 void copy(void);
 
-main() {
+int main() {
   int len;
   extern int max;
   extern char longest[];

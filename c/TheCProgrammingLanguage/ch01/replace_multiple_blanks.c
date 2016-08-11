@@ -4,7 +4,7 @@ main() {
   int c;
 
   while ((c = getchar()) != EOF) {
-    if (c == ' ') {
+    if (c == '\b') {
       printf("\\b");
     } else if (c == '\t') { 
       putchar('\\');

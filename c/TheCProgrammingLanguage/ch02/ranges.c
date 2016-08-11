@@ -2,7 +2,7 @@
 #include <limits.h>
 #include <float.h>
 
-main() {
+int main() {
   printf("Type\tMin\t\t\tMax\t\t\tUnSign\n");
   printf("char\t%d\t\t\t%d\t\t\t%d\n", CHAR_MIN, CHAR_MAX, UCHAR_MAX);
   printf("sohrt\t%d\t\t\t%d\t\t\t%d\n", SHRT_MIN, SHRT_MAX, USHRT_MAX);

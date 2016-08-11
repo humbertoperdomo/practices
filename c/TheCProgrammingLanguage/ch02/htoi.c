@@ -2,7 +2,9 @@
 #define LENGHTNUMBER 256
 
 int getLine(char[], int);
-main() {
+int htoi(char[]);
+int upper(int);
+int main() {
   int i;
   char num[LENGHTNUMBER];
   printf("Enter a number: ");
@@ -10,7 +12,7 @@ main() {
   getLine(num, LENGHTNUMBER);
   
   i = htoi(num);
-  printf("The value entered is %d. Its double is %d.", i, i*2);
+  printf("The value entered is %d. Its double is %d.\n", i, i*2);
 
   return 0;
 }

@@ -7,7 +7,7 @@ void copy(char to[], char from[]);
 /**
  * Print longest input line
  */
-main() {
+int main() {
   int len;                // current line length
   int max;                // maximum length seen so far
   char line[MAXLINE];     // current input line

@@ -10,4 +10,4 @@ for number in numbers:
     elif number == 3:
         print(str(number) + "rd")
     elif number > 3:
-        print(str(number) + "th")
+            print(str(number) + "th")

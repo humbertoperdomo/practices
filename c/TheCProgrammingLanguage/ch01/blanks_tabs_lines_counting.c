@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-main() {
+int main() {
   int c, nb = 0, nt = 0, nl = 0;
 
   while((c = getchar()) != EOF)
@@ -10,7 +10,7 @@ main() {
       ++nt;
     else if (c == '\n')
       ++nl;
-  printf("Blacks: %d\n", nb);
+  printf("Blanks: %d\n", nb);
   printf("Tabs: %d\n", nt);
   printf("Lines: %d\n", nl);
 }
