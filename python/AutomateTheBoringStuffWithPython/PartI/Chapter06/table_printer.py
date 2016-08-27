@@ -19,6 +19,7 @@ def get_longest_item(items):
 def print_table(table):
     """Prints a table
     """
+    # Getting longest item name
     col_width = [0] * len(table)
     for i in range(len(col_width)):
         col_width[i] = get_longest_item(table[i])
