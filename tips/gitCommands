@@ -1,0 +1,102 @@
+git config --global user.name "Humberto Perdomo"
+git config --global user.email humberto.perdomo@gmail.com
+git config --global core.editor "vim"
+
+git config --list
+
+git init
+
+git add [. | *.java | <file name>]
+
+git commit -m 'Comment that explains the commit'
+
+git status
+
+git diff
+
+git add [modified file name]
+
+git diff --cached
+
+git commit # this going to open the editor in order to create a commit message
+
+git commit -a -m 'Commit comment'
+
+git rm -f [file name to delete from staged] # this command delete the file from system
+
+git rm --cached [file name to delete from staged]
+
+git mv [original path/name] [new path/name]
+
+git log
+
+git log --pretty=oneline
+
+git log --pretty=format:"%h : %an : %ar : %s"
+
+git log -p -2
+
+git log -stat
+
+git log --since=1.weeks
+
+git log --since="2016-08-31"
+
+git log --author="Humberto Perdomo"
+
+git log --before="2016-08-31"
+
+git commit --amend # this gives the opportunity to chage the comment of the commit
+
+git reset HEAD [file name to reset]
+
+
+# commands to push files to a server git. Files should be commited to local git
+git remote add origin [URL git file]
+
+git push -u origin master
+
+
+git remote -v
+
+
+# to get data from the remote without merge the changes there are there with local work
+git fetch origin
+
+# to get data from the remote with all changes
+git pull [URL of fetch get from git remote -v]
+
+
+git add .gitignore
+git commit -m 'Added .gitignore for...'
+
+# command to change the name of the fragment
+git remote rename [current name] [new name]
+
+
+# show tags
+git tag
+
+# create a tag for the previous commit for example tag v0.01
+git tag -a v0.01 -m 'Version 0.01'
+
+# to see the details in regards to a tag
+git show v0.01
+
+# to create a tag for a specific commit
+# the editor gets opened then a comment can be added
+git tag -a v0.02 [6 first characters of the hash commit]
+
+
+# push a specific tag
+git push [name of fragment exampple. orogin] [tag]
+
+# push all tags
+git push [name of fragment] --tags
+
+
+# create aliases
+git config --global alias.co commit
+
+# clone repository
+git clone [URL git file]
