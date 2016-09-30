@@ -1,4 +1,4 @@
-#!/urs/bin/python3
+#!e/urs/bn/python3
 # restaurant.py
 """Class Restaurant"""
 class Restaurant():
@@ -18,12 +18,12 @@ class Restaurant():
         """Simulates that restaurant is open."""
         print(self.restaurant_name.title() + " is open.")
 
-restaurant = Restaurant("alessandro's", 'italian')
-print("Restaurant name: " + restaurant.restaurant_name.title() + ".")
-print("Cuisine type: " + restaurant.cuisine_type + ".")
-restaurant.describe_restaurat()
-restaurant.open_restaurant()
-restaurant_2 = Restaurant('sanborns', 'international')
-restaurant_3 = Restaurant('el santo coyote', 'mexican')
-restaurant_2.describe_restaurat()
-restaurant_3.describe_restaurat()
+#RESTAURANT = Restaurant("alessandro's", 'italian')
+#print("Restaurant name: " + RESTAURANT.restaurant_name.title() + ".")
+#print("Cuisine type: " + RESTAURANT.cuisine_type + ".")
+#RESTAURANT.describe_restaurat()
+#RESTAURANT.open_restaurant()
+#RESTAURANT_2 = Restaurant('sanborns', 'international')
+#RESTAURANT_3 = Restaurant('el santo coyote', 'mexican')
+#RESTAURANT_2.describe_restaurat()
+#RESTAURANT_3.describe_restaurat()

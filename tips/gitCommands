@@ -1,6 +1,9 @@
 git config --global user.name "Humberto Perdomo"
 git config --global user.email humberto.perdomo@gmail.com
 git config --global core.editor "vim"
+git config --global merge.tool vimdiff
+git config --global merge.conflictstyle diff3
+git config --global mergetool.prompt false
 
 git config --list
 
@@ -100,3 +103,49 @@ git config --global alias.co commit
 
 # clone repository
 git clone [URL git file]
+
+
+# create a branch
+git branch fix20
+
+# switch to the new brach
+git checkout fix20
+
+# both steps together
+git checkout -b fix20
+
+# any change after these steps is going to the new branch no affecting master
+# that is the same fot the commits
+
+# to get back to the master
+git checkout master
+
+# to push the branch over github(repository)
+git push origin fix20
+
+
+# if somebody else goes with next command, it's going to receive a reference to
+# the new brach but it's not going to get all the files
+git fetch origin
+
+# to get the whole branch
+git checkout -b fix20 origin/fix20
+
+# to see branches
+git branch
+
+# to see brange merged
+git branch --merged
+
+# to see the unmerged
+git branch --no-merged
+
+# to merge branches, first you have to checkout the branch you want to be merge
+# then execute
+git merge [name of the branch to be merged with, example fix20]
+
+# to delete a branch unused. Use capital D instead to delete unmerged branches
+git branch -d [name of the branch to be merged with, example fix20]
+
+# it also possible to delete branches located in the remote repository (github)
+git push origin :fix20

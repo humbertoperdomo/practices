@@ -1,0 +1,15 @@
+###############################################################################
+#
+# Generate a project
+#
+###############################################################################
+mvn archetype:generate -DgroupId=mx.naui.soap -DartifactId=TestWSDL -Dversion=1.0.0-SNAPSHOT -Dpackage=mx.naui.soap
+
+
+mvn clean:clean     # mvn clean
+
+mvn validate
+
+mvn package
+
+mvn compiler:compile    # mvn compile

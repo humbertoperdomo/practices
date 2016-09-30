@@ -1,0 +1,5 @@
+In Python you can read files.
+In Python you can use lists.
+In Python you can create classes.
+In Python you can write into files.
+In Python you can iterate dictionaries.
