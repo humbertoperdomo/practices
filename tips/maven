@@ -3,7 +3,7 @@
 # Generate a project
 #
 ###############################################################################
-mvn archetype:generate -DgroupId=mx.naui.soap -DartifactId=TestWSDL -Dversion=1.0.0-SNAPSHOT -Dpackage=mx.naui.soap
+mvn archetype:generate -DgroupId=mx.naui.soap -DartifactId=TestWSDL -Dversion=0.0.1-SNAPSHOT -Dpackage=mx.naui.soap
 
 
 mvn clean:clean     # mvn clean
@@ -13,3 +13,80 @@ mvn validate
 mvn package
 
 mvn compiler:compile    # mvn compile
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>mx.naui</groupId>
+  <artifactId>testprog</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>testprog</name>
+  <url>http://naui.mx</url>
+
+  <properties>
+    <jdk.version>1.8</jdk.version>
+    <junit.version>4.11</junit.version>
+    <log4j.version>1.2.17</log4j.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>4.3.7.RELEASE</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>testprog</finalName>
+    <plugins>
+      <!-- Set a JDK compiler level -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.6.1</version>
+        <configuration>
+          <source>${jdk.version}</source>
+          <target>${jdk.version}</target>
+        </configuration>
+      </plugin>
+      <!-- Make this jar executable -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.2</version>
+        <configuration>
+          <!-- DO NOT include log4j.properties file in your Jar -->
+          <excludes>
+            <exclude>**/log4j.properties</exclude>
+          </excludes>
+          <archive>
+            <manifest>
+              <!-- Jar file entry point -->
+              <mainClass>mx.naui.spring.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <organization>
+    <name>NAUI</name>
+  </organization>
+</project>
+
