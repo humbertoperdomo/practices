@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="jungle" class="mx.naui.spring.Jungle">
+		<property name="largest">
+			<bean id="elephant" class="mx.naui.spring.Animal">
+				<property name="name" value="Richard"></property>
+				<property name="type" value="elephant"></property>
+			</bean>
+		</property>
+		<property name="animals">
+			<list>
+				<bean class="mx.naui.spring.Animal">
+					<property name="name" value="Igor"></property>
+					<property name="type" value="lion"></property>
+				</bean>
+
+				<bean class="mx.naui.spring.Animal">
+					<property name="name" value="Bob"></property>
+					<property name="type" value="snake"></property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

@@ -1,37 +1,20 @@
-###############################################################################
-#
-# Generate a project
-#
-###############################################################################
-mvn archetype:generate -DgroupId=mx.naui.soap -DartifactId=TestWSDL -Dversion=0.0.1-SNAPSHOT -Dpackage=mx.naui.soap
-
-
-mvn clean:clean     # mvn clean
-
-mvn validate
-
-mvn package
-
-mvn compiler:compile    # mvn compile
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>mx.naui</groupId>
-  <artifactId>spring-tutorial-5</artifactId>
+  <artifactId>testprog</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>spring-tutorial-5</name>
+  <name>testprog</name>
   <url>http://maven.apache.org</url>
 
   <properties>
-    <classpath.prefix>lib/</classpath.prefix>
     <jdk.version>1.8</jdk.version>
     <junit.version>4.11</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>4.3.7.RELEASE</spring.version>
   </properties>
 
   <dependencies>
@@ -48,23 +31,13 @@ mvn compiler:compile    # mvn compile
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-beans</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>${spring.version}</version>
+      <version>4.3.7.RELEASE</version>
     </dependency>
   </dependencies>
 
   <build>
-    <finalName>spring-tutorial-5</finalName>
+    <finalName>testprog</finalName>
     <plugins>
       <!-- Set a JDK compiler level -->
       <plugin>
@@ -88,34 +61,15 @@ mvn compiler:compile    # mvn compile
           </excludes>
           <archive>
             <manifest>
-              <addClasspath>true</addClasspath>
               <!-- Jar file entry point -->
               <mainClass>mx.naui.spring.App</mainClass>
-              <classpathPrefix>${classpath.prefix}</classpathPrefix>
             </manifest>
           </archive>
         </configuration>
       </plugin>
-      <!-- Copy project dependency -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <!-- exclude junit, we need runtime dependency only -->
-              <includeScope>runtime</includeScope>
-              <outputDirectory>${project.build.directory}/${classpath.prefix}</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
+  <organization>
+    <name>NAUI</name>
+  </organization>
 </project>
