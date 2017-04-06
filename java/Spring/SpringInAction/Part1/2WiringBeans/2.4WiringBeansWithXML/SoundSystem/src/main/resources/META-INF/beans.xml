@@ -1,0 +1,69 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans xmlns = "http://www.springframework.org/schema/beans"
+  xmlns:c="http://www.springframework.org/schema/c"
+  xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation = "http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context">
+
+    <!-- <bean id="compactDisc" 
+         class="mx.naui.spring.soundsystem.SgtPeppers" /> -->
+
+    <bean id="cdPlayer" class="mx.naui.spring.soundsystem.CDPlayer">
+        <constructor-arg ref="compactDisc" />
+    </bean>
+    <!-- 
+         Using parameter name "cd"
+    <bean id="cdPlayer" class="mx.naui.spring.soundsystem.CDPlayer"
+        c:cd-ref="compactDisc" />
+    -->
+    <!-- 
+         Using index parameter
+    <bean id="cdPlayer" class="mx.naui.spring.soundsystem.CDPlayer"
+        c:_0-ref="compactDisc" />
+    -->
+    <!-- 
+         Using only "_" since there is only one parameter in the constructor
+    <bean id="cdPlayer" class="mx.naui.spring.soundsystem.CDPlayer"
+        c:cd-ref="compactDisc" />
+    -->
+
+    <bean id="compactDisc" class="mx.naui.spring.soundsystem.BlankDisc">
+        <constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band" />
+        <constructor-arg value="The Beatles" />
+        <!-- <constructor-arg><null /></constructor-arg> -->
+        <constructor-arg>
+            <!-- 
+             <list>
+             It's also possible to use <set> instead <list>
+                 -->
+            <set>
+                <value>Sgt. Pepper's Lonely Hearts Club Band</value>
+                <value>With a Little Help from My Friends</value>
+                <value>Lucy in the Sky with Diamonds</value>
+                <value>Getting Better</value>
+                <value>Fixing a Hole</value>
+            </set>
+            <!-- </list> -->
+        </constructor-arg>
+    </bean>
+    <!--
+        Using parameters name
+    <bean id="compactDisc" class="mx.naui.spring.soundsystem.BlankDisc" 
+        c:_title="Sgt. Pepper's Lonely Hearts Club Band"
+        c:_artist="The Beatles"/>
+    -->
+    <!--
+        Using parameters indexes
+    <bean id="compactDisc" class="mx.naui.spring.soundsystem.BlankDisc" 
+        c:_0="Sgt. Pepper's Lonely Hearts Club Band"
+        c:_1="The Beatles"/>
+    -->
+    <!--
+        If there were only one parameter it would be possible use just "_"
+    <bean id="compactDisc" class="mx.naui.spring.soundsystem.BlankDisc" 
+        c:_="Sgt. Pepper's Lonely Hearts Club Band" />
+    -->
+
+</beans>
+

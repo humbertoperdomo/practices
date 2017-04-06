@@ -10,5 +10,5 @@ public class KnightMain {
         Knight knight = context.getBean(Knight.class);
         knight.embarkOnQuest();
         context.close();
-    }
+        }
 }
