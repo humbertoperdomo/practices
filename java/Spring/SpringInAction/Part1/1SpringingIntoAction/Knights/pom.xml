@@ -13,9 +13,9 @@
   <properties>
     <aspectj.version>1.8.10</aspectj.version>
     <junit.version>4.12</junit.version>
-    <mockito.version>1.9.5</mockito.version>
+    <mockito.version>1.10.19</mockito.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>4.3.7.RELEASE</spring.version>
+    <spring.version>4.3.16.RELEASE</spring.version>
   </properties>
 
   <dependencies>
