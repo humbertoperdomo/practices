@@ -23,8 +23,8 @@ public class CDPlayerTest {
     @Autowired
     private MediaPlayer player;
 
-    //@Inject
     @Autowired
+    //@Inject
     private CompactDisc cd;
 
     @Test

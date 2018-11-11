@@ -1,17 +1,17 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<beans xmlns = "http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:c="http://www.springframework.org/schema/c"
   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation = "http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context">
 
-    <!-- <bean id="compactDisc" 
-         class="mx.naui.spring.soundsystem.SgtPeppers" /> -->
+    <bean id="compactDisc" 
+         class="mx.naui.spring.soundsystem.SgtPeppers" />
 
-    <bean id="cdPlayer" class="mx.naui.spring.soundsystem.CDPlayer">
+    <!-- <bean id="cdPlayer" class="mx.naui.spring.soundsystem.CDPlayer">
         <constructor-arg ref="compactDisc" />
-    </bean>
+    </bean> -->
     <!-- 
          Using parameter name "cd"
     <bean id="cdPlayer" class="mx.naui.spring.soundsystem.CDPlayer"
@@ -28,25 +28,25 @@
         c:cd-ref="compactDisc" />
     -->
 
-    <bean id="compactDisc" class="mx.naui.spring.soundsystem.BlankDisc">
+    <!-- <bean id="compactDisc" class="mx.naui.spring.soundsystem.BlankDisc">
         <constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band" />
-        <constructor-arg value="The Beatles" />
+        <constructor-arg value="The Beatles" /> -->
         <!-- <constructor-arg><null /></constructor-arg> -->
-        <constructor-arg>
+        <!-- <constructor-arg> -->
             <!-- 
              <list>
              It's also possible to use <set> instead <list>
                  -->
-            <set>
+            <!-- <set>
                 <value>Sgt. Pepper's Lonely Hearts Club Band</value>
                 <value>With a Little Help from My Friends</value>
                 <value>Lucy in the Sky with Diamonds</value>
                 <value>Getting Better</value>
                 <value>Fixing a Hole</value>
-            </set>
+            </set> -->
             <!-- </list> -->
-        </constructor-arg>
-    </bean>
+        <!-- </constructor-arg>
+    </bean> -->
     <!--
         Using parameters name
     <bean id="compactDisc" class="mx.naui.spring.soundsystem.BlankDisc" 
